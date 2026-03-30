@@ -45,12 +45,12 @@ class NumberedMarkerPainter {
       canvas.drawCircle(
         Offset(cx, cy),
         radius + 8,
-        Paint()..color = markerColor.withOpacity(0.2),
+        Paint()..color = markerColor.withValues(alpha: .2),
       );
       canvas.drawCircle(
         Offset(cx, cy),
         radius + 4,
-        Paint()..color = markerColor.withOpacity(0.35),
+        Paint()..color = markerColor.withValues(alpha: .35),
       );
     }
 

@@ -2,26 +2,72 @@ import 'package:flutter/material.dart';
 import 'package:manuel_route_builder/configs/manuel_route_builder_config.dart';
 import '../../../enums/selection_mode.dart';
 
+/// The bottom sheet panel shown during manual route creation.
+///
+/// Renders different content based on the current [step] and [selectionMode]:
+/// - **Step 0 / none** — mode selection cards (circle or free draw)
+/// - **Step 0 / circle** — radius slider and proceed button
+/// - **Step 0 / freeDraw** — drawing instructions and proceed button
+/// - **Step 1** — start point selection (current location or map tap)
+///
+/// This widget is used internally by [ManualRouteCreationScreen].
+/// You do not need to instantiate it directly.
 class BottomSheetContent extends StatelessWidget {
+  /// The current step of the route building process (e.g., 0 or 1).
   final int step;
+
+  /// The current selection mode (none, circle, or freeDraw).
   final SelectionMode selectionMode;
+
+  /// Whether a circle has been defined on the map.
   final bool hasCircle;
+
+  /// Whether the starting point has been selected.
   final bool hasStartPoint;
+
+  /// Whether the user is currently in drawing mode.
   final bool isDrawingMode;
+
+  /// The number of points currently selected/found in the area.
   final int pointCount;
+
+  /// The radius of the circular selection in meters.
   final double radius;
+
+  /// Callback triggered when the radius slider is adjusted.
   final ValueChanged<double> onRadiusChanged;
+
+  /// Callback to proceed to the next step.
   final VoidCallback onNextStep;
+
+  /// Callback to use the device's current location as the start point.
   final VoidCallback onUseCurrentLoc;
+
+  /// Callback to manually select a start point on the map.
   final VoidCallback onSelectOnMap;
+
+  /// Callback to finalize and build the route.
   final VoidCallback onBuildRoute;
+
+  /// Callback to switch to circle selection mode.
   final VoidCallback onSelectCircleMode;
+
+  /// Callback to switch to free draw selection mode.
   final VoidCallback onSelectFreeDrawMode;
+
+  /// Callback to reset the selection mode to none.
   final VoidCallback onResetMode;
+
+  /// Callback to clear the current free-hand drawing.
   final VoidCallback onResetFreeDraw;
+
+  /// Primary theme color for buttons and highlights.
   final Color primaryColor;
+
+  /// Color used to indicate successful selections or counts.
   final Color successColor;
 
+  /// Creates a [BottomSheetContent] widget.
   const BottomSheetContent({
     super.key,
     required this.step,
@@ -48,9 +94,11 @@ class BottomSheetContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-          color: Colors.white,
-          border:
-              Border(top: BorderSide(color: Color(0xFFE0DDD6), width: 0.5))),
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(color: Color(0xFFE0DDD6), width: 0.5),
+        ),
+      ),
       padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -104,8 +152,7 @@ class _ModeSelectionView extends StatelessWidget {
       children: [
         _SectionTitle(ManuelRouteBuilderConfig.l10n.wayOfAreaSelection),
         const SizedBox(height: 4),
-        _StatusText(ManuelRouteBuilderConfig.l10n.selectAreaOnMap,
-            active: false),
+        _StatusText(ManuelRouteBuilderConfig.l10n.selectAreaOnMap, active: false),
         const SizedBox(height: 16),
         Row(
           children: [
@@ -113,8 +160,7 @@ class _ModeSelectionView extends StatelessWidget {
               child: _ModeCard(
                 icon: Icons.radio_button_checked,
                 label: ManuelRouteBuilderConfig.l10n.circleSelectionMode,
-                description:
-                    ManuelRouteBuilderConfig.l10n.drawCircleByClickingOnMap,
+                description: ManuelRouteBuilderConfig.l10n.drawCircleByClickingOnMap,
                 color: parent.primaryColor,
                 onTap: parent.onSelectCircleMode,
               ),
@@ -146,15 +192,11 @@ class _CircleSelectionView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _HeaderWithBack(
-            title: ManuelRouteBuilderConfig.l10n.circleSelectionMode,
-            onBack: parent.onResetMode,
-            color: parent.primaryColor),
+        _HeaderWithBack(title: ManuelRouteBuilderConfig.l10n.circleSelectionMode, onBack: parent.onResetMode, color: parent.primaryColor),
         const SizedBox(height: 4),
         _StatusText(
           parent.hasCircle
-              ? ManuelRouteBuilderConfig.l10n
-                  .pointsCountInArea(parent.pointCount)
+              ? ManuelRouteBuilderConfig.l10n.pointsCountInArea(parent.pointCount)
               : ManuelRouteBuilderConfig.l10n.drawCircleByClickingOnMap,
           active: parent.hasCircle,
           activeColor: parent.successColor,
@@ -168,11 +210,8 @@ class _CircleSelectionView extends StatelessWidget {
         const SizedBox(height: 8),
         _PrimaryButton(
           label: canProceed
-              ? ManuelRouteBuilderConfig.l10n
-                  .pointsCountInArea(parent.pointCount)
-              : (parent.hasCircle
-                  ? ManuelRouteBuilderConfig.l10n.noPointsInArea
-                  : ManuelRouteBuilderConfig.l10n.continueButton),
+              ? ManuelRouteBuilderConfig.l10n.pointsCountInArea(parent.pointCount)
+              : (parent.hasCircle ? ManuelRouteBuilderConfig.l10n.noPointsInArea : ManuelRouteBuilderConfig.l10n.continueButton),
           onPressed: canProceed ? parent.onNextStep : null,
           color: parent.primaryColor,
         ),
@@ -193,43 +232,36 @@ class _FreeDrawSelectionView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _HeaderWithBack(
-            title: ManuelRouteBuilderConfig.l10n.freeDrawSelectionMode,
-            onBack: parent.onResetMode,
-            color: parent.primaryColor),
+        _HeaderWithBack(title: ManuelRouteBuilderConfig.l10n.freeDrawSelectionMode, onBack: parent.onResetMode, color: parent.primaryColor),
         const SizedBox(height: 4),
         _StatusText(
           isDrawing
               ? ManuelRouteBuilderConfig.l10n.freeDrawOnMap
               : canProceed
-                  ? ManuelRouteBuilderConfig.l10n
-                      .pointsCountInArea(parent.pointCount)
+                  ? ManuelRouteBuilderConfig.l10n.pointsCountInArea(parent.pointCount)
                   : ManuelRouteBuilderConfig.l10n.areaNotDrawnYet,
           active: canProceed && !isDrawing,
           activeColor: parent.successColor,
         ),
         const SizedBox(height: 16),
         if (!isDrawing && !canProceed)
-          _PrimaryButton(
-              label: ManuelRouteBuilderConfig.l10n.startDrawing,
-              onPressed: parent.onSelectFreeDrawMode,
-              color: parent.primaryColor),
+          _PrimaryButton(label: ManuelRouteBuilderConfig.l10n.startDrawing, onPressed: parent.onSelectFreeDrawMode, color: parent.primaryColor),
         if (isDrawing) _DrawingInfoBox(color: parent.primaryColor),
         if (canProceed && !isDrawing) ...[
           const SizedBox(height: 8),
           Row(
             children: [
               Expanded(
-                  child: _PrimaryButton(
-                      label: ManuelRouteBuilderConfig.l10n.reset,
-                      onPressed: parent.onResetFreeDraw,
-                      color: parent.primaryColor.withOpacity(0.4))),
+                child: _PrimaryButton(
+                  label: ManuelRouteBuilderConfig.l10n.reset,
+                  onPressed: parent.onResetFreeDraw,
+                  color: parent.primaryColor.withValues(alpha: .4),
+                ),
+              ),
               const SizedBox(width: 4),
               Expanded(
-                  child: _PrimaryButton(
-                      label: ManuelRouteBuilderConfig.l10n.continueButton,
-                      onPressed: parent.onNextStep,
-                      color: parent.primaryColor)),
+                child: _PrimaryButton(label: ManuelRouteBuilderConfig.l10n.continueButton, onPressed: parent.onNextStep, color: parent.primaryColor),
+              ),
             ],
           ),
         ],
@@ -252,9 +284,7 @@ class _Step1Container extends StatelessWidget {
         _SectionTitle(ManuelRouteBuilderConfig.l10n.startPointTitle),
         const SizedBox(height: 4),
         _StatusText(
-          parent.hasStartPoint
-              ? ManuelRouteBuilderConfig.l10n.startPointSelected
-              : ManuelRouteBuilderConfig.l10n.selectOptionOrTapMap,
+          parent.hasStartPoint ? ManuelRouteBuilderConfig.l10n.startPointSelected : ManuelRouteBuilderConfig.l10n.selectOptionOrTapMap,
           active: parent.hasStartPoint,
           activeColor: parent.successColor,
         ),
@@ -302,8 +332,7 @@ class _HeaderWithBack extends StatelessWidget {
   final VoidCallback onBack;
   final Color color;
 
-  const _HeaderWithBack(
-      {required this.title, required this.onBack, required this.color});
+  const _HeaderWithBack({required this.title, required this.onBack, required this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -326,8 +355,7 @@ class _RadiusSlider extends StatelessWidget {
   final Color color;
   final double _maxRadius = 5000, _minRadius = 50; //can be parametric
 
-  const _RadiusSlider(
-      {required this.radius, required this.onChanged, required this.color});
+  const _RadiusSlider({required this.radius, required this.onChanged, required this.color});
 
   String _formatRadius(double meters) {
     if (meters >= 1000) {
@@ -343,12 +371,10 @@ class _RadiusSlider extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(ManuelRouteBuilderConfig.l10n.radius,
-                style: TextStyle(fontSize: 13)),
+            Text(ManuelRouteBuilderConfig.l10n.radius, style: TextStyle(fontSize: 13)),
             Text(
               "${_formatRadius(radius)} / ${_formatRadius(_maxRadius)}",
-              style: TextStyle(
-                  fontSize: 13, fontWeight: FontWeight.w600, color: color),
+              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: color),
             ),
           ],
         ),
@@ -376,7 +402,7 @@ class _DrawingInfoBox extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.08),
+        color: color.withValues(alpha: .08),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
@@ -417,9 +443,9 @@ class _ModeCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          border: Border.all(color: color.withOpacity(0.4)),
+          border: Border.all(color: color.withValues(alpha: .4)),
           borderRadius: BorderRadius.circular(12),
-          color: color.withOpacity(0.05),
+          color: color.withValues(alpha: .05),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -428,8 +454,7 @@ class _ModeCard extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               label,
-              style: TextStyle(
-                  fontSize: 13, fontWeight: FontWeight.w600, color: color),
+              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: color),
             ),
             const SizedBox(height: 4),
             Text(
@@ -464,8 +489,7 @@ class _SectionTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(text,
-        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600));
+    return Text(text, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600));
   }
 }
 
@@ -474,8 +498,7 @@ class _StatusText extends StatelessWidget {
   final bool active;
   final Color activeColor;
 
-  const _StatusText(this.text,
-      {required this.active, this.activeColor = Colors.grey});
+  const _StatusText(this.text, {required this.active, this.activeColor = Colors.grey});
 
   @override
   Widget build(BuildContext context) {
@@ -494,8 +517,7 @@ class _PrimaryButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final Color color;
 
-  const _PrimaryButton(
-      {required this.label, required this.onPressed, required this.color});
+  const _PrimaryButton({required this.label, required this.onPressed, required this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -506,8 +528,7 @@ class _PrimaryButton extends StatelessWidget {
         style: FilledButton.styleFrom(
           backgroundColor: color,
           disabledBackgroundColor: const Color(0xFFD3D1C7),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           padding: const EdgeInsets.symmetric(vertical: 14),
         ),
         child: Text(label),

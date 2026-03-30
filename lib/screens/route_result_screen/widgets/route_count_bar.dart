@@ -16,7 +16,7 @@ class RouteCountBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ColoredBox(
-      color: color.withOpacity(0.08),
+      color: color.withValues(alpha: .08),
       child: SizedBox(
         width: double.infinity,
         child: Padding(

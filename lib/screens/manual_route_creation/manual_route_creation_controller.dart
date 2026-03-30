@@ -213,7 +213,7 @@ class ManualRouteCreationController extends ChangeNotifier {
           Polygon(
             polygonId: const PolygonId('free_draw_zone'),
             points: freeDrawPoints,
-            fillColor: primaryColor.withOpacity(0.2),
+            fillColor: primaryColor.withValues(alpha: .2),
             strokeColor: primaryColor,
             strokeWidth: 2,
           ),
@@ -226,7 +226,7 @@ class ManualRouteCreationController extends ChangeNotifier {
             circleId: const CircleId('zone'),
             center: circleCenter!,
             radius: radiusMeters,
-            fillColor: primaryColor.withOpacity(0.15),
+            fillColor: primaryColor.withValues(alpha: 0.15),
             strokeColor: primaryColor,
             strokeWidth: 2,
           ),

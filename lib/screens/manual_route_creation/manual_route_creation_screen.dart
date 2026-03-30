@@ -59,7 +59,8 @@ class ManualRouteCreationScreen extends StatefulWidget {
   });
 
   @override
-  State<ManualRouteCreationScreen> createState() => _ManualRouteCreationScreenState();
+  State<ManualRouteCreationScreen> createState() =>
+      _ManualRouteCreationScreenState();
 }
 
 class _ManualRouteCreationScreenState extends State<ManualRouteCreationScreen> {
@@ -78,11 +79,15 @@ class _ManualRouteCreationScreenState extends State<ManualRouteCreationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final stepIndicator = StepIndicator(currentStep: _controller.step, activeColor: Colors.white, doneColor: widget.successColor);
+    final stepIndicator = StepIndicator(
+        currentStep: _controller.step,
+        activeColor: Colors.white,
+        doneColor: widget.successColor);
 
     final appBar = AppBar(
       title: Text(ManuelRouteBuilderConfig.l10n.generatedManuelRoute),
-      bottom: PreferredSize(preferredSize: const Size.fromHeight(32), child: stepIndicator),
+      bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(32), child: stepIndicator),
     ) as PreferredSizeWidget;
 
     final body = _buildBody();
@@ -99,7 +104,8 @@ class _ManualRouteCreationScreenState extends State<ManualRouteCreationScreen> {
         Column(
           children: [
             Expanded(child: _buildMap()),
-            if (_controller.isSelectingStart) _SelectingBanner(color: widget.primaryColor),
+            if (_controller.isSelectingStart)
+              _SelectingBanner(color: widget.primaryColor),
             BottomSheetContent(
               step: _controller.step,
               selectionMode: _controller.selectionMode,
@@ -135,7 +141,8 @@ class _ManualRouteCreationScreenState extends State<ManualRouteCreationScreen> {
           zoomGesturesEnabled: !_controller.isFreeDrawing,
           rotateGesturesEnabled: !_controller.isFreeDrawing,
           tiltGesturesEnabled: !_controller.isFreeDrawing,
-          initialCameraPosition: RouteBuilderService.computeInitialCamera(widget.allPoints),
+          initialCameraPosition:
+              RouteBuilderService.computeInitialCamera(widget.allPoints),
           onMapCreated: _onMapCreated,
           markers: _markers,
           polygons: _controller.getPolygons(widget.primaryColor),
@@ -145,7 +152,8 @@ class _ManualRouteCreationScreenState extends State<ManualRouteCreationScreen> {
         if (_controller.isFreeDrawing)
           Positioned.fill(
             child: GestureDetector(
-              onPanUpdate: (details) => _controller.addScreenPoint(details.localPosition),
+              onPanUpdate: (details) =>
+                  _controller.addScreenPoint(details.localPosition),
               onPanEnd: (_) => _controller.finalizeFreeDraw(_mapController!),
               child: CustomPaint(
                 painter: FreeDrawPainter(
@@ -214,7 +222,8 @@ class _ManualRouteCreationScreenState extends State<ManualRouteCreationScreen> {
         Marker(
           markerId: const MarkerId('start'),
           position: _controller.startPoint!,
-          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
+          icon:
+              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
         ),
     };
   }

@@ -9,7 +9,8 @@ class RouteBuilderService {
   RouteBuilderService._();
 
   static const double _earthRadius = 6371000.0;
-  static const CameraPosition _fallbackPosition = const CameraPosition(target: LatLng(41.0082, 28.9784), zoom: 13);
+  static const CameraPosition _fallbackPosition =
+      const CameraPosition(target: LatLng(41.0082, 28.9784), zoom: 13);
 
   /// Returns the haversine distance in metres between [a] and [b].
   static double haversineDistance(LatLng a, LatLng b) {
@@ -17,7 +18,8 @@ class RouteBuilderService {
     final dLng = _toRad(b.longitude - a.longitude);
     final sinDLat = sin(dLat / 2);
     final sinDLng = sin(dLng / 2);
-    final x = sinDLat * sinDLat + cos(_toRad(a.latitude)) * cos(_toRad(b.latitude)) * sinDLng * sinDLng;
+    final x = sinDLat * sinDLat +
+        cos(_toRad(a.latitude)) * cos(_toRad(b.latitude)) * sinDLng * sinDLng;
     return _earthRadius * 2 * atan2(sqrt(x), sqrt(1 - x));
   }
 
@@ -30,7 +32,9 @@ class RouteBuilderService {
     LatLng center,
     double radiusMeters,
   ) {
-    return points.where((p) => haversineDistance(center, p.location) <= radiusMeters).toList();
+    return points
+        .where((p) => haversineDistance(center, p.location) <= radiusMeters)
+        .toList();
   }
 
   /// Orders [points] by proximity starting from [startLocation]
@@ -48,7 +52,8 @@ class RouteBuilderService {
     var current = startLocation;
 
     while (remaining.isNotEmpty) {
-      remaining.sort((a, b) => haversineDistance(current, a.location).compareTo(haversineDistance(current, b.location)));
+      remaining.sort((a, b) => haversineDistance(current, a.location)
+          .compareTo(haversineDistance(current, b.location)));
       final nearest = remaining.removeAt(0);
       route.add(nearest);
       current = nearest.location;
@@ -59,7 +64,8 @@ class RouteBuilderService {
   /// Returns a [LatLngBounds] that covers all [points].
   ///
   /// If [startPoint] is provided it is also included in the bounds.
-  static LatLngBounds computeBounds(List<RoutePoint> points, {LatLng? startPoint}) {
+  static LatLngBounds computeBounds(List<RoutePoint> points,
+      {LatLng? startPoint}) {
     final latitudes = [
       ...points.map((p) => p.location.latitude),
       if (startPoint != null) startPoint.latitude,
@@ -79,12 +85,15 @@ class RouteBuilderService {
   /// appropriate zoom level based on how spread out the points are.
   ///
   /// Falls back to [fallback] if [points] is empty.
-  static CameraPosition computeInitialCamera(List<RoutePoint> points, {CameraPosition fallback = _fallbackPosition}) {
+  static CameraPosition computeInitialCamera(List<RoutePoint> points,
+      {CameraPosition fallback = _fallbackPosition}) {
     if (points.isEmpty) return fallback;
 
     final bounds = computeBounds(points);
-    final centerLat = (bounds.southwest.latitude + bounds.northeast.latitude) / 2;
-    final centerLng = (bounds.southwest.longitude + bounds.northeast.longitude) / 2;
+    final centerLat =
+        (bounds.southwest.latitude + bounds.northeast.latitude) / 2;
+    final centerLng =
+        (bounds.southwest.longitude + bounds.northeast.longitude) / 2;
     final latSpan = bounds.northeast.latitude - bounds.southwest.latitude;
     final lngSpan = bounds.northeast.longitude - bounds.southwest.longitude;
     final maxSpan = latSpan > lngSpan ? latSpan : lngSpan;

@@ -10,7 +10,7 @@ class FreeDrawPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     if (points.length < 2) return;
     final paint = Paint()
-      ..color = color.withOpacity(0.7)
+      ..color = color.withValues(alpha: .7)
       ..strokeCap = StrokeCap.round
       ..strokeWidth = 3.0
       ..style = PaintingStyle.stroke;

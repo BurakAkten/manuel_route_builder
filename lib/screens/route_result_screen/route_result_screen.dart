@@ -77,7 +77,9 @@ class _RouteResultScreenState extends State<RouteResultScreen> {
       focused[i] = await NumberedMarkerPainter.create(
         number: i + 1,
         color: widget.primaryColor,
-        style: style == MarkerStyle.last ? MarkerStyle.lastFocused : MarkerStyle.focused,
+        style: style == MarkerStyle.last
+            ? MarkerStyle.lastFocused
+            : MarkerStyle.focused,
       );
     }
 
@@ -111,7 +113,9 @@ class _RouteResultScreenState extends State<RouteResultScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final appBar = AppBar(title: Text(ManuelRouteBuilderConfig.l10n.generatedRoute)) as PreferredSizeWidget;
+    final appBar =
+        AppBar(title: Text(ManuelRouteBuilderConfig.l10n.generatedRoute))
+            as PreferredSizeWidget;
 
     final body = RouteResultBody(
       route: widget.route,
@@ -129,7 +133,8 @@ class _RouteResultScreenState extends State<RouteResultScreen> {
     );
 
     if (widget.scaffoldBuilder != null) {
-      return widget.scaffoldBuilder!(context, appBar, const SizedBox.shrink(), body);
+      return widget.scaffoldBuilder!(
+          context, appBar, const SizedBox.shrink(), body);
     }
     return Scaffold(appBar: appBar, body: body);
   }

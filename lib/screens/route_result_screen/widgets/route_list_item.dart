@@ -21,7 +21,7 @@ class RouteListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
-      color: isFocused ? color.withOpacity(0.08) : Colors.white,
+      color: isFocused ? color.withValues(alpha: .08) : Colors.white,
       child: ListTile(
         leading: CircleAvatar(
           backgroundColor: isFocused ? const Color(0xFFEF9F27) : color,
