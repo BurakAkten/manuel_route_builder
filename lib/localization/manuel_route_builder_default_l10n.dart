@@ -38,8 +38,7 @@ class ManuelRouteBuilderDefaultL10n implements ManuelRouteBuilderL10n {
   String get selectAreaOnMap => "Select area on map";
 
   @override
-  String get drawCircleByClickingOnMap =>
-      "Draw a circle by clicking on the map.";
+  String get drawCircleByClickingOnMap => "Draw a circle by clicking on the map.";
 
   @override
   String get freeDrawOnMap => "Free draw on map";
@@ -51,7 +50,7 @@ class ManuelRouteBuilderDefaultL10n implements ManuelRouteBuilderL10n {
   String get noPointsInArea => "No points in this area";
 
   @override
-  String get continueButton => "Continue →";
+  String get continueButton => "Continue >";
 
   @override
   String get areaNotDrawnYet => "Area has not been drawn yet";
@@ -84,7 +83,6 @@ class ManuelRouteBuilderDefaultL10n implements ManuelRouteBuilderL10n {
   String get buildRoute => "Build route";
 
   @override
-  String pointsCountInArea(int count) =>
-      "$count point${count > 1 ? 's' : ''} in this area";
+  String pointsCountInArea(int count) => "$count point${count > 1 ? 's' : ''} in this area";
   String pointsCount(int count) => "$count point${count > 1 ? 's' : ''}";
 }

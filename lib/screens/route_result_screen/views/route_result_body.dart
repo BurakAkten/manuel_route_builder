@@ -5,8 +5,6 @@ import '../../../models/route_point.dart';
 import '../widgets/save_button.dart';
 import 'map_section.dart';
 
-const int _MAX_WIDTH = 600;
-
 class RouteResultBody extends StatelessWidget {
   final List<RoutePoint> route;
   final LatLng startPoint;
@@ -38,15 +36,15 @@ class RouteResultBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final isVertical = constraints.maxWidth < _MAX_WIDTH;
+    return OrientationBuilder(
+      builder: (context, orientation) {
+        final isLandscape = orientation == Orientation.landscape;
         return Container(
           color: Colors.grey[50],
           child: Column(
             children: [
               Expanded(
-                child: isVertical ? _buildVertical() : _buildHorizontal(),
+                child: !isLandscape ? _buildVertical() : _buildHorizontal(),
               ),
               SaveButton(
                 color: successColor,

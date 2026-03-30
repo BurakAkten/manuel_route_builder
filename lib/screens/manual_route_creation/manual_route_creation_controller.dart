@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:maps_toolkit/maps_toolkit.dart' as mp;
@@ -80,8 +81,7 @@ class ManualRouteCreationController extends ChangeNotifier {
   void onRadiusChanged(double v) {
     radiusMeters = v;
     if (circleCenter != null) {
-      pointsInZone =
-          RouteBuilderService.filterInCircle(allPoints, circleCenter!, v);
+      pointsInZone = RouteBuilderService.filterInCircle(allPoints, circleCenter!, v);
     }
     notifyListeners();
   }
@@ -93,7 +93,7 @@ class ManualRouteCreationController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> finalizeFreeDraw(GoogleMapController mapController) async {
+  Future<void> finalizeFreeDraw(GoogleMapController mapController, double devicePixelRatio) async {
     if (screenPoints.length < 5) {
       screenPoints.clear();
       isFreeDrawing = false;
@@ -104,10 +104,14 @@ class ManualRouteCreationController extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
 
-    final convertedPoints = <LatLng>[];
-    for (final point in screenPoints) {
+    final double ratio = Platform.isAndroid ? devicePixelRatio : 1.0;
+    List<LatLng> convertedPoints = [];
+    for (var point in screenPoints) {
       final latLng = await mapController.getLatLng(
-        ScreenCoordinate(x: point.dx.toInt(), y: point.dy.toInt()),
+        ScreenCoordinate(
+          x: (point.dx * ratio).toInt(),
+          y: (point.dy * ratio).toInt(),
+        ),
       );
       convertedPoints.add(latLng);
     }
@@ -117,8 +121,7 @@ class ManualRouteCreationController extends ChangeNotifier {
       freeDrawPoints.add(freeDrawPoints.first);
     }
 
-    final polygonForToolkit =
-        freeDrawPoints.map((p) => mp.LatLng(p.latitude, p.longitude)).toList();
+    final polygonForToolkit = freeDrawPoints.map((p) => mp.LatLng(p.latitude, p.longitude)).toList();
 
     pointsInZone = allPoints.where((p) {
       return mp.PolygonUtil.containsLocation(
@@ -142,8 +145,7 @@ class ManualRouteCreationController extends ChangeNotifier {
     if (step == 0 && selectionMode == SelectionMode.circle) {
       freeDrawPoints.clear();
       circleCenter = pos;
-      pointsInZone =
-          RouteBuilderService.filterInCircle(allPoints, pos, radiusMeters);
+      pointsInZone = RouteBuilderService.filterInCircle(allPoints, pos, radiusMeters);
       notifyListeners();
       return;
     }
@@ -178,9 +180,7 @@ class ManualRouteCreationController extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
     try {
-      return await Future.microtask(() =>
-          RouteBuilderService.buildNearestNeighborRoute(
-              pointsInZone, startPoint!));
+      return await Future.microtask(() => RouteBuilderService.buildNearestNeighborRoute(pointsInZone, startPoint!));
     } finally {
       isLoading = false;
       notifyListeners();
@@ -194,17 +194,14 @@ class ManualRouteCreationController extends ChangeNotifier {
       (bounds.southwest.latitude + bounds.northeast.latitude) / 2,
       (bounds.southwest.longitude + bounds.northeast.longitude) / 2,
     );
-    return RouteBuilderService.haversineDistance(routeCenter, startPoint!) <
-        startPointThresholdMeters;
+    return RouteBuilderService.haversineDistance(routeCenter, startPoint!) < startPointThresholdMeters;
   }
 
   // ── Helpers ───────────────────────────────────────────────────────
 
   bool isInZone(RoutePoint p) => pointsInZone.contains(p);
 
-  bool get canProceedToNextStep =>
-      (circleCenter != null || freeDrawPoints.isNotEmpty) &&
-      pointsInZone.isNotEmpty;
+  bool get canProceedToNextStep => (circleCenter != null || freeDrawPoints.isNotEmpty) && pointsInZone.isNotEmpty;
 
   bool get hasArea => circleCenter != null || freeDrawPoints.isNotEmpty;
 

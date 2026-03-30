@@ -96,31 +96,57 @@ class _ManualRouteCreationScreenState extends State<ManualRouteCreationScreen> {
   Widget _buildBody() {
     return Stack(
       children: [
-        Column(
-          children: [
-            Expanded(child: _buildMap()),
-            if (_controller.isSelectingStart) _SelectingBanner(color: widget.primaryColor),
-            BottomSheetContent(
-              step: _controller.step,
-              selectionMode: _controller.selectionMode,
-              hasCircle: _controller.circleCenter != null,
-              hasStartPoint: _controller.startPoint != null,
-              isDrawingMode: _controller.isFreeDrawing,
-              pointCount: _controller.pointsInZone.length,
-              radius: _controller.radiusMeters,
-              primaryColor: widget.primaryColor,
-              successColor: widget.successColor,
-              onRadiusChanged: _controller.onRadiusChanged,
-              onNextStep: _controller.goToNextStep,
-              onUseCurrentLoc: _useCurrentLocation,
-              onSelectOnMap: _controller.enableMapStartSelection,
-              onBuildRoute: _buildAndShowRoute,
-              onSelectCircleMode: _controller.selectCircleMode,
-              onSelectFreeDrawMode: _controller.selectFreeDrawMode,
-              onResetMode: _controller.resetSelectionMode,
-              onResetFreeDraw: _controller.resetFreeDraw,
+        Positioned.fill(
+          child: _buildMap(),
+        ),
+        if (_controller.isSelectingStart)
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: _SelectingBanner(color: widget.primaryColor),
+          ),
+        DraggableScrollableSheet(
+          initialChildSize: 0.30,
+          minChildSize: 0.15,
+          maxChildSize: 0.5,
+          // snap: true,
+          builder: (context, scrollController) => Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: .1),
+                  blurRadius: 10,
+                  spreadRadius: 5,
+                ),
+              ],
             ),
-          ],
+            child: SingleChildScrollView(
+              controller: scrollController,
+              child: BottomSheetContent(
+                step: _controller.step,
+                selectionMode: _controller.selectionMode,
+                hasCircle: _controller.circleCenter != null,
+                hasStartPoint: _controller.startPoint != null,
+                isDrawingMode: _controller.isFreeDrawing,
+                pointCount: _controller.pointsInZone.length,
+                radius: _controller.radiusMeters,
+                primaryColor: widget.primaryColor,
+                successColor: widget.successColor,
+                onRadiusChanged: _controller.onRadiusChanged,
+                onNextStep: _controller.goToNextStep,
+                onUseCurrentLoc: _useCurrentLocation,
+                onSelectOnMap: _controller.enableMapStartSelection,
+                onBuildRoute: _buildAndShowRoute,
+                onSelectCircleMode: _controller.selectCircleMode,
+                onSelectFreeDrawMode: _controller.selectFreeDrawMode,
+                onResetMode: _controller.resetSelectionMode,
+                onResetFreeDraw: _controller.resetFreeDraw,
+              ),
+            ),
+          ),
         ),
         if (_controller.isLoading) _LoadingOverlay(color: widget.primaryColor),
       ],
@@ -146,7 +172,7 @@ class _ManualRouteCreationScreenState extends State<ManualRouteCreationScreen> {
           Positioned.fill(
             child: GestureDetector(
               onPanUpdate: (details) => _controller.addScreenPoint(details.localPosition),
-              onPanEnd: (_) => _controller.finalizeFreeDraw(_mapController!),
+              onPanEnd: (_) => _controller.finalizeFreeDraw(_mapController!, MediaQuery.of(context).devicePixelRatio),
               child: CustomPaint(
                 painter: FreeDrawPainter(
                   points: _controller.screenPoints,

@@ -1,3 +1,8 @@
+## 1.0.4
+
+* Android free draw pixel bug fixed
+* Small devices UI bug fixed
+
 ## 1.0.3
 
 * Update google_maps_flutter plugin.

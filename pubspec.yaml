@@ -1,6 +1,6 @@
 name: manuel_route_builder
 description: A Flutter package for creating manual routes on Google Maps with circle or free-draw area selection and nearest neighbor routing.
-version: 1.0.3
+version: 1.0.4
 homepage: https://github.com/BurakAkten/manuel_route_builder.git
 
 environment:
