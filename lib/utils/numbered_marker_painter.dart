@@ -81,7 +81,8 @@ class NumberedMarkerPainter {
     canvas.drawPath(triangle, Paint()..color = markerColor);
 
     // Inner circle
-    canvas.drawCircle(Offset(cx, cy), radius - 6, Paint()..color = Colors.white);
+    canvas.drawCircle(
+        Offset(cx, cy), radius - 6, Paint()..color = Colors.white);
 
     // Number
     final textPainter = TextPainter(

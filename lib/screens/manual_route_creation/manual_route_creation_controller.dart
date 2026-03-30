@@ -80,7 +80,8 @@ class ManualRouteCreationController extends ChangeNotifier {
   void onRadiusChanged(double v) {
     radiusMeters = v;
     if (circleCenter != null) {
-      pointsInZone = RouteBuilderService.filterInCircle(allPoints, circleCenter!, v);
+      pointsInZone =
+          RouteBuilderService.filterInCircle(allPoints, circleCenter!, v);
     }
     notifyListeners();
   }
@@ -116,7 +117,8 @@ class ManualRouteCreationController extends ChangeNotifier {
       freeDrawPoints.add(freeDrawPoints.first);
     }
 
-    final polygonForToolkit = freeDrawPoints.map((p) => mp.LatLng(p.latitude, p.longitude)).toList();
+    final polygonForToolkit =
+        freeDrawPoints.map((p) => mp.LatLng(p.latitude, p.longitude)).toList();
 
     pointsInZone = allPoints.where((p) {
       return mp.PolygonUtil.containsLocation(
@@ -140,7 +142,8 @@ class ManualRouteCreationController extends ChangeNotifier {
     if (step == 0 && selectionMode == SelectionMode.circle) {
       freeDrawPoints.clear();
       circleCenter = pos;
-      pointsInZone = RouteBuilderService.filterInCircle(allPoints, pos, radiusMeters);
+      pointsInZone =
+          RouteBuilderService.filterInCircle(allPoints, pos, radiusMeters);
       notifyListeners();
       return;
     }
@@ -175,7 +178,9 @@ class ManualRouteCreationController extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
     try {
-      return await Future.microtask(() => RouteBuilderService.buildNearestNeighborRoute(pointsInZone, startPoint!));
+      return await Future.microtask(() =>
+          RouteBuilderService.buildNearestNeighborRoute(
+              pointsInZone, startPoint!));
     } finally {
       isLoading = false;
       notifyListeners();
@@ -189,14 +194,17 @@ class ManualRouteCreationController extends ChangeNotifier {
       (bounds.southwest.latitude + bounds.northeast.latitude) / 2,
       (bounds.southwest.longitude + bounds.northeast.longitude) / 2,
     );
-    return RouteBuilderService.haversineDistance(routeCenter, startPoint!) < startPointThresholdMeters;
+    return RouteBuilderService.haversineDistance(routeCenter, startPoint!) <
+        startPointThresholdMeters;
   }
 
   // ── Helpers ───────────────────────────────────────────────────────
 
   bool isInZone(RoutePoint p) => pointsInZone.contains(p);
 
-  bool get canProceedToNextStep => (circleCenter != null || freeDrawPoints.isNotEmpty) && pointsInZone.isNotEmpty;
+  bool get canProceedToNextStep =>
+      (circleCenter != null || freeDrawPoints.isNotEmpty) &&
+      pointsInZone.isNotEmpty;
 
   bool get hasArea => circleCenter != null || freeDrawPoints.isNotEmpty;
 

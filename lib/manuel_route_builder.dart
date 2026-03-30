@@ -1,3 +1,9 @@
+/// Manuel Route Builder — create manual routes on Google Maps.
+///
+/// Import this single file to access all public APIs:
+/// ```dart
+/// import 'package:manuel_route_builder/manuel_route_builder.dart';
+/// ```
 library manuel_route_builder;
 
 export 'models/route_point.dart';

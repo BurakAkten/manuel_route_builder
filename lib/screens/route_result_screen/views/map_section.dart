@@ -56,16 +56,22 @@ class MapSection extends StatelessWidget {
           Marker(
             markerId: const MarkerId('start'),
             position: startPoint,
-            icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
-            infoWindow: InfoWindow(title: ManuelRouteBuilderConfig.l10n.starting),
+            icon: BitmapDescriptor.defaultMarkerWithHue(
+                BitmapDescriptor.hueGreen),
+            infoWindow:
+                InfoWindow(title: ManuelRouteBuilderConfig.l10n.starting),
           ),
         for (int i = 0; i < route.length; i++)
           Marker(
             markerId: MarkerId('route_$i'),
             position: route[i].location,
             icon: focusedIndex == i
-                ? (focusedMarkers[i] ?? BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange))
-                : (numberedMarkers[i] ?? BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet)),
+                ? (focusedMarkers[i] ??
+                    BitmapDescriptor.defaultMarkerWithHue(
+                        BitmapDescriptor.hueOrange))
+                : (numberedMarkers[i] ??
+                    BitmapDescriptor.defaultMarkerWithHue(
+                        BitmapDescriptor.hueViolet)),
             infoWindow: InfoWindow(title: '${i + 1}. ${route[i].title}'),
             zIndex: focusedIndex == i ? 1.0 : 0.0,
             onTap: () => onPointTap(route[i].location, i),

@@ -2,12 +2,16 @@ import 'dart:math';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../models/route_point.dart';
 
+/// Static utilities for route filtering and calculation.
+///
+/// All methods are static — no instantiation needed.
 class RouteBuilderService {
   RouteBuilderService._();
 
   static const double _earthRadius = 6371000.0;
   static const CameraPosition _fallbackPosition = const CameraPosition(target: LatLng(41.0082, 28.9784), zoom: 13);
 
+  /// Returns the haversine distance in metres between [a] and [b].
   static double haversineDistance(LatLng a, LatLng b) {
     final dLat = _toRad(b.latitude - a.latitude);
     final dLng = _toRad(b.longitude - a.longitude);
@@ -19,6 +23,8 @@ class RouteBuilderService {
 
   static double _toRad(double deg) => deg * pi / 180;
 
+  /// Returns all [points] whose distance from [center] is within
+  /// [radiusMeters].
   static List<RoutePoint> filterInCircle(
     List<RoutePoint> points,
     LatLng center,
@@ -27,6 +33,10 @@ class RouteBuilderService {
     return points.where((p) => haversineDistance(center, p.location) <= radiusMeters).toList();
   }
 
+  /// Orders [points] by proximity starting from [startLocation]
+  /// using the nearest neighbor greedy algorithm.
+  ///
+  /// Returns an empty list if [points] is empty.
   static List<RoutePoint> buildNearestNeighborRoute(
     List<RoutePoint> points,
     LatLng startLocation,
@@ -46,6 +56,9 @@ class RouteBuilderService {
     return route;
   }
 
+  /// Returns a [LatLngBounds] that covers all [points].
+  ///
+  /// If [startPoint] is provided it is also included in the bounds.
   static LatLngBounds computeBounds(List<RoutePoint> points, {LatLng? startPoint}) {
     final latitudes = [
       ...points.map((p) => p.location.latitude),
@@ -62,6 +75,10 @@ class RouteBuilderService {
     );
   }
 
+  /// Returns a [CameraPosition] centered on [points] with an
+  /// appropriate zoom level based on how spread out the points are.
+  ///
+  /// Falls back to [fallback] if [points] is empty.
   static CameraPosition computeInitialCamera(List<RoutePoint> points, {CameraPosition fallback = _fallbackPosition}) {
     if (points.isEmpty) return fallback;
 

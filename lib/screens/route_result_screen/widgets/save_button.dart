@@ -22,7 +22,8 @@ class SaveButton extends StatelessWidget {
           style: FilledButton.styleFrom(
             backgroundColor: color,
             padding: const EdgeInsets.symmetric(vertical: 14),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           ),
           child: Text(
             ManuelRouteBuilderConfig.l10n.save,

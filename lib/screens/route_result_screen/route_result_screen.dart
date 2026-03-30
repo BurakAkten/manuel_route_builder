@@ -14,6 +14,15 @@ typedef ScaffoldBuilder = Widget Function(
   Widget body,
 );
 
+/// Displays the calculated route on a map with numbered markers
+/// and a scrollable list of stops.
+///
+/// Tapping a list item zooms the map to that stop and highlights
+/// its marker in amber. The first stop uses a green marker, the
+/// last stop uses a red marker with a flag icon.
+///
+/// Normally you don't need to instantiate this directly —
+/// [ManualRouteCreationScreen] handles navigation automatically.
 class RouteResultScreen extends StatefulWidget {
   final List<RoutePoint> route;
   final LatLng startPoint;

@@ -16,6 +16,26 @@ typedef ScaffoldBuilder = Widget Function(
   Widget body,
 );
 
+/// A screen that lets the user select an area on the map and a
+/// starting point, then builds an optimized route through all
+/// [RoutePoint]s within that area.
+///
+/// Two area selection modes are available:
+/// - **Circle** — tap to place a center point, adjust radius with slider.
+/// - **Free draw** — drag finger across the map to draw a polygon.
+///
+/// ```dart
+/// ManualRouteCreationScreen(
+///   allPoints: myPoints,
+///   onGetCurrentLocation: () async {
+///     final pos = await Geolocator.getCurrentPosition();
+///     return LatLng(pos.latitude, pos.longitude);
+///   },
+///   onRouteSaved: (route, startPoint) {
+///     print('${route.length} stops saved');
+///   },
+/// )
+/// ```
 class ManualRouteCreationScreen extends StatefulWidget {
   final List<RoutePoint> allPoints;
   final Future<LatLng?> Function()? onGetCurrentLocation;

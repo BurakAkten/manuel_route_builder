@@ -21,6 +21,14 @@ A Flutter package for creating manual routes on a map. Users can select an area 
 
 Add to your `pubspec.yaml`:
 
+```yaml
+dependencies:
+  manuel_route_builder:
+    git:
+      url: https://github.com/BurakAkten/manuel_route_builder.git
+      ref: main
+```
+
 
 Then run:
 
@@ -237,6 +245,13 @@ lib/
 ```
 
 ---
+
+## Running the example
+
+To run the example app you need a Google Maps API key.
+Replace `YOUR_GOOGLE_MAPS_API_KEY_HERE` in:
+- `example/android/app/src/main/AndroidManifest.xml`
+- `example/ios/Runner/AppDelegate.swift`
 
 ## License
 

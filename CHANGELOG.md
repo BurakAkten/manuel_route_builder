@@ -1,3 +1,6 @@
-## 0.0.1
+## 1.0.0
 
-* TODO: Describe initial release.
+* Initial release.
+* Circle and free-draw area selection on Google Maps.
+* Nearest neighbor route algorithm.
+* Customizable scaffold, colors, and list item builder.
