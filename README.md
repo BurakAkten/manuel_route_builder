@@ -23,10 +23,7 @@ Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  manuel_route_builder:
-    git:
-      url: https://github.com/BurakAkten/manuel_route_builder.git
-      ref: main
+  manuel_route_builder: ^1.0.0
 ```
 
 
