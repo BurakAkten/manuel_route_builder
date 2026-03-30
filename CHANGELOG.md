@@ -1,3 +1,7 @@
+## 1.0.5
+
+* Demo gif added to README.md
+
 ## 1.0.4
 
 * Android free draw pixel bug fixed

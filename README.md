@@ -1,3 +1,5 @@
+[![pub package](https://img.shields.io/pub/v/manuel_route_builder.svg)](https://pub.dartlang.org/packages/manuel_route_builder)
+
 # manuel_route_builder
 
 A Flutter package for creating manual routes on a map. Users can select an area on the map (circle or free draw), choose a starting point, and the package automatically calculates the optimal route through all points within the selected area using the nearest neighbor algorithm.
@@ -16,6 +18,10 @@ A Flutter package for creating manual routes on a map. Users can select an area 
 - **Fully customizable** — Primary color, success color, custom scaffold builder, custom list item builder, and save callback
 
 ---
+
+<p>
+<img src="https://raw.githubusercontent.com/BurakAkten/manuel_route_builder/main/gifs/package_demo.gif" alt="drawing"/> 
+</p>
 
 ## Installation
 
