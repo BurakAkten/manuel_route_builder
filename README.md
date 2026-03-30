@@ -23,7 +23,7 @@ Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  manuel_route_builder: ^1.0.0
+  manuel_route_builder: ^X.Y.Z
 ```
 
 

@@ -1,3 +1,7 @@
+## 1.0.3
+
+* Update google_maps_flutter plugin.
+
 ## 1.0.2
 
 * Add dart docs and remove old usage of withOpacity method
