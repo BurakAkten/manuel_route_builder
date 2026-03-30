@@ -1,3 +1,7 @@
+## 1.0.2
+
+* Add dart docs and remove old usage of withOpacity method
+
 ## 1.0.1
 
 * Updated installation instructions in README.
